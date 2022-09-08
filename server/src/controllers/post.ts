@@ -2,6 +2,7 @@ import { PostMessageDTO } from '../interfaces';
 import express from 'express';
 import { PostMessage } from '../models';
 import logger from '../middlewares/loggerMiddleware';
+import mongoose from 'mongoose';
 
 export default class PostController{
     constructor(){
@@ -29,6 +30,23 @@ export default class PostController{
         }catch(error){
             res.status(409).json({ message : error.message})
         }
+
+    }
+
+    public updatePost = async ( req : express.Request , res : express.Response) => {
+        try{
+            const _id  = req.params.id;
+            const payload = req.body;
+            if(!mongoose.Types.ObjectId.isValid(_id)){
+                return res.status(404).send('No post found with the id')
+            }else{
+                const updatedPost = await PostMessage.findByIdAndUpdate(_id, payload, { new : true})
+                res.json(updatedPost);
+            }
+        }catch(error){
+            console.log(error)
+        }
+        
 
     }
 }
