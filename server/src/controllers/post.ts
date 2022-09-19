@@ -57,4 +57,15 @@ export default class PostController{
         await PostMessage.findByIdAndDelete(id);
         res.json({ message : 'Post deleted sucessfully'})
     }
+
+    public likePost =async (req : express.Request , res : express.Response) => {
+        const { id } = req.params;
+        if(!mongoose.Types.ObjectId.isValid(id)){
+            return res.status(404).send(`No post found with the id ${id}`)
+        }
+
+        const post = await PostMessage.findById(id);
+        const updatedPost = await PostMessage.findByIdAndUpdate(id, { likeCount : post.likeCount + 1}, { new : true})
+        res.json(updatedPost);
+    }
 }

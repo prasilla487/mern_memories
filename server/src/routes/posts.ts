@@ -10,4 +10,5 @@ router.post(path, postController.createPost)
 router.get(path, postController.getAllPosts)
 router.patch(`${path}/:id`, postController.updatePost)
 router.delete(`${path}/:id`, postController.deletePost);
+router.patch(`${path}/:id/likePost`, postController.likePost)
 export default router;
