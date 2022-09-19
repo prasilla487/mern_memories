@@ -46,7 +46,15 @@ export default class PostController{
         }catch(error){
             console.log(error)
         }
-        
+    }
 
+    public deletePost = async (req : express.Request , res : express.Response) => {
+        const { id } = req.params;
+        if(!mongoose.Types.ObjectId.isValid(id)){
+            return res.status(404).send(`No post found with the id ${id}`)
+        }
+
+        await PostMessage.findByIdAndDelete(id);
+        res.json({ message : 'Post deleted sucessfully'})
     }
 }
